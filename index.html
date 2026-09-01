@@ -1,0 +1,391 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<title>아침 공지판</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E📌%3C/text%3E%3C/svg%3E">
+<meta name="description" content="학교 지메일 공지를 매일 오전 9시에 상황별로 분석해 쌓아두는 개인 브리핑 페이지">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@600;700&family=Noto+Sans+KR:wght@400;500;600;700&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+
+<style>
+  :root {
+    --paper: #f4f3ee;
+    --paper-raised: #fbfaf7;
+    --ink: #23262b;
+    --ink-soft: #63666d;
+    --ink-faint: #93958f;
+    --line: #ddd9cf;
+    --accent: #9c1c30;
+    --accent-soft: #f3dee1;
+    --accent-ink: #7a1626;
+    --pin-high: #9c1c30;
+    --pin-mid: #a3711a;
+    --pin-low: #46685c;
+    --pin-info: #536078;
+    --shadow: 0 1px 2px rgba(35, 38, 43, 0.06), 0 6px 16px rgba(35, 38, 43, 0.07);
+    --radius: 3px;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --paper: #1b1c1e;
+      --paper-raised: #232427;
+      --ink: #eeece6;
+      --ink-soft: #a4a49d;
+      --ink-faint: #6d6e6a;
+      --line: #38393a;
+      --accent: #e0576b;
+      --accent-soft: #3a2226;
+      --accent-ink: #f2a3ad;
+      --pin-high: #e0576b;
+      --pin-mid: #d6a24e;
+      --pin-low: #7fb3a1;
+      --pin-info: #93a3c2;
+      --shadow: 0 1px 2px rgba(0, 0, 0, 0.35), 0 6px 20px rgba(0, 0, 0, 0.4);
+    }
+  }
+
+  :root[data-theme="dark"] {
+    --paper: #1b1c1e;
+    --paper-raised: #232427;
+    --ink: #eeece6;
+    --ink-soft: #a4a49d;
+    --ink-faint: #6d6e6a;
+    --line: #38393a;
+    --accent: #e0576b;
+    --accent-soft: #3a2226;
+    --accent-ink: #f2a3ad;
+    --pin-high: #e0576b;
+    --pin-mid: #d6a24e;
+    --pin-low: #7fb3a1;
+    --pin-info: #93a3c2;
+    --shadow: 0 1px 2px rgba(0, 0, 0, 0.35), 0 6px 20px rgba(0, 0, 0, 0.4);
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: "Noto Sans KR", "Malgun Gothic", sans-serif;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .page {
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 56px 24px 96px;
+  }
+
+  header.masthead {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    padding-bottom: 28px;
+    border-bottom: 2px solid var(--ink);
+    margin-bottom: 8px;
+  }
+
+  .masthead-top {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+
+  h1 {
+    font-family: "Noto Serif KR", serif;
+    font-weight: 700;
+    font-size: clamp(28px, 5vw, 36px);
+    margin: 0;
+    letter-spacing: -0.01em;
+    text-wrap: balance;
+  }
+
+  .status {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 12.5px;
+    color: var(--ink-soft);
+    font-variant-numeric: tabular-nums;
+    font-family: "JetBrains Mono", ui-monospace, monospace;
+  }
+
+  .status::before {
+    content: "";
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--pin-mid);
+    display: inline-block;
+  }
+
+  .status.live::before { background: var(--pin-low); }
+
+  .masthead-sub {
+    color: var(--ink-soft);
+    font-size: 15px;
+    max-width: 58ch;
+    margin: 0;
+  }
+
+  .meta-row {
+    display: flex;
+    gap: 18px;
+    flex-wrap: wrap;
+    font-size: 12.5px;
+    color: var(--ink-faint);
+    font-family: "JetBrains Mono", ui-monospace, monospace;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .meta-row span b {
+    color: var(--ink-soft);
+    font-weight: 500;
+  }
+
+  .legend {
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+    padding: 18px 0 26px;
+    font-size: 12.5px;
+    color: var(--ink-faint);
+  }
+
+  .legend-item { display: inline-flex; align-items: center; gap: 6px; }
+  .legend-dot { width: 7px; height: 7px; border-radius: 50%; }
+
+  .timeline {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+  }
+
+  .day-group { display: flex; flex-direction: column; gap: 14px; }
+
+  .day-heading {
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+    font-family: "JetBrains Mono", ui-monospace, monospace;
+    font-size: 13px;
+    color: var(--ink-soft);
+    font-weight: 500;
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .day-heading .weekday { color: var(--ink-faint); font-weight: 400; }
+  .day-heading .count { margin-left: auto; color: var(--ink-faint); }
+
+  .day-group.is-collapsed > summary.day-heading { cursor: pointer; list-style: none; }
+  .day-group.is-collapsed > summary.day-heading::-webkit-details-marker { display: none; }
+  .day-group.is-collapsed > summary.day-heading::before {
+    content: "▸";
+    font-family: inherit;
+    margin-right: 2px;
+  }
+  .day-group.is-collapsed[open] > summary.day-heading::before { content: "▾"; }
+
+  .board {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+  }
+
+  .notice {
+    position: relative;
+    background: var(--paper-raised);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    padding: 20px 22px 20px 26px;
+  }
+
+  .notice::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 14px;
+    bottom: 14px;
+    width: 3px;
+    border-radius: 2px;
+    background: var(--pin, var(--pin-info));
+  }
+
+  .notice.priority-high { --pin: var(--pin-high); }
+  .notice.priority-mid { --pin: var(--pin-mid); }
+  .notice.priority-low { --pin: var(--pin-low); }
+  .notice.priority-info { --pin: var(--pin-info); }
+
+  .notice-head {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 8px;
+  }
+
+  .notice-title-group { display: flex; flex-direction: column; gap: 4px; min-width: 0; }
+
+  .notice-source {
+    font-size: 12px;
+    color: var(--ink-faint);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  .notice-title {
+    font-weight: 600;
+    font-size: 16.5px;
+    text-wrap: balance;
+  }
+
+  .chip {
+    flex: none;
+    font-size: 11.5px;
+    font-weight: 600;
+    padding: 3px 9px;
+    border-radius: 100px;
+    white-space: nowrap;
+    background: var(--accent-soft);
+    color: var(--accent-ink);
+  }
+
+  .notice.priority-mid .chip { background: color-mix(in srgb, var(--pin-mid) 22%, transparent); color: var(--pin-mid); }
+  .notice.priority-low .chip { background: color-mix(in srgb, var(--pin-low) 20%, transparent); color: var(--pin-low); }
+  .notice.priority-info .chip { background: color-mix(in srgb, var(--pin-info) 18%, transparent); color: var(--pin-info); }
+
+  .notice-analysis {
+    font-size: 14.5px;
+    color: var(--ink);
+    margin: 10px 0 0;
+  }
+
+  .notice-analysis .label {
+    font-size: 11.5px;
+    font-weight: 600;
+    color: var(--ink-faint);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    display: block;
+    margin-bottom: 4px;
+  }
+
+  .notice-foot {
+    display: flex;
+    gap: 14px;
+    margin-top: 14px;
+    padding-top: 12px;
+    border-top: 1px solid var(--line);
+    font-size: 12px;
+    color: var(--ink-faint);
+    font-family: "JetBrains Mono", ui-monospace, monospace;
+    font-variant-numeric: tabular-nums;
+    flex-wrap: wrap;
+  }
+
+  .placeholder {
+    text-align: center;
+    padding: 56px 28px;
+    border: 1px dashed var(--line);
+    border-radius: var(--radius);
+    color: var(--ink-soft);
+  }
+
+  .placeholder h2 {
+    font-family: "Noto Serif KR", serif;
+    font-size: 19px;
+    font-weight: 600;
+    color: var(--ink);
+    margin: 0 0 10px;
+  }
+
+  .placeholder p { margin: 0 auto; max-width: 46ch; font-size: 14.5px; }
+
+  .placeholder ol {
+    text-align: left;
+    max-width: 40ch;
+    margin: 20px auto 0;
+    padding-left: 20px;
+    font-size: 13.5px;
+    color: var(--ink-soft);
+  }
+  .placeholder li { margin-bottom: 6px; }
+
+  footer.note {
+    margin-top: 36px;
+    font-size: 12px;
+    color: var(--ink-faint);
+    text-align: center;
+  }
+  footer.note a { color: var(--ink-soft); }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .notice { transition: box-shadow 0.15s ease; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+  <header class="masthead">
+    <div class="masthead-top">
+      <h1>아침 공지판</h1>
+      <span class="status">설정 대기 중</span>
+    </div>
+    <p class="masthead-sub">학교 지메일에 온 공지를 매일 오전 9시에 훑어, 지금 상황(복학 준비 · 수학 조교 지원 · MABC 공모전)에 맞춰 뭐가 중요한지 판단해 날짜별로 쌓아둡니다.</p>
+    <div class="meta-row">
+      <span>마지막 업데이트 <b>—</b></span>
+      <span>다음 업데이트 <b>매일 09:00 KST</b></span>
+      <span>누적 <b>0일</b></span>
+    </div>
+  </header>
+
+  <div class="legend">
+    <span class="legend-item"><span class="legend-dot" style="background:var(--pin-high)"></span>바로 대응 필요</span>
+    <span class="legend-item"><span class="legend-dot" style="background:var(--pin-mid)"></span>기한 있음 · 확인 필요</span>
+    <span class="legend-item"><span class="legend-dot" style="background:var(--pin-low)"></span>참고만</span>
+    <span class="legend-item"><span class="legend-dot" style="background:var(--pin-info)"></span>해당 없음 · 스킵 후보</span>
+  </div>
+
+  <div class="timeline">
+    <section class="day-group">
+      <div class="day-heading">예시 <span class="weekday">· 실제 데이터 아님</span></div>
+      <div class="board">
+        <article class="notice priority-high">
+          <div class="notice-head">
+            <div class="notice-title-group">
+              <span class="notice-source">예시 · 교무처</span>
+              <span class="notice-title">2026학년도 2학기 복학 신청 안내</span>
+            </div>
+            <span class="chip">바로 대응</span>
+          </div>
+          <p class="notice-analysis">
+            <span class="label">이렇게 정리될 예정입니다</span>
+            복학 준비 중인 상황이라 이 공지는 최우선으로 올라옵니다. 신청 기간·필요 서류·마감일을 짚고, 이미 처리된 내용이면 다음 날부터는 낮은 우선순위로 내려갑니다.
+          </p>
+          <div class="notice-foot">
+            <span>예시 카드 — 실제 공지 아님</span>
+          </div>
+        </article>
+
+        <div class="placeholder">
+          <h2>첫 자동 업데이트를 기다리는 중</h2>
+          <p>루틴이 연결되면 매일 이 자리 위쪽에 그날 새 카드가 날짜별로 쌓입니다. 단순 요약이 아니라 지금 상황 기준으로 뭐가 급하고 뭐가 무시해도 되는지까지 판단해서 올라옵니다.</p>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <footer class="note">Claude가 매일 아침 갱신 · <a href="https://github.com/pju87600-ctrl/morning-notice-board">github.com/pju87600-ctrl/morning-notice-board</a></footer>
+</div>
+</body>
+</html>
