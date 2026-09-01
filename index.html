@@ -332,6 +332,82 @@
   @media (prefers-reduced-motion: no-preference) {
     .notice { transition: box-shadow 0.15s ease; }
   }
+
+  .today {
+    background: var(--paper-raised);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    padding: 20px 22px;
+    margin-bottom: 34px;
+  }
+
+  .today-head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 12px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .today-title {
+    font-family: "Noto Serif KR", serif;
+    font-weight: 700;
+    font-size: 17px;
+    margin: 0;
+  }
+
+  .today-date {
+    font-family: "JetBrains Mono", ui-monospace, monospace;
+    font-size: 12px;
+    color: var(--ink-faint);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .today-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .today-list li {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 10px;
+    font-size: 14.5px;
+    padding: 9px 12px;
+    border-radius: var(--radius);
+    background: var(--paper);
+  }
+
+  .today-list li.due-soon {
+    background: var(--accent-soft);
+    color: var(--accent-ink);
+    font-weight: 600;
+  }
+
+  .today-list .due {
+    flex: none;
+    font-family: "JetBrains Mono", ui-monospace, monospace;
+    font-size: 12px;
+    color: var(--ink-faint);
+    white-space: nowrap;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .today-list li.due-soon .due { color: var(--accent-ink); }
+
+  .today-empty {
+    margin: 0;
+    color: var(--ink-soft);
+    font-size: 14.5px;
+  }
 </style>
 </head>
 <body>
@@ -339,13 +415,13 @@
   <header class="masthead">
     <div class="masthead-top">
       <h1>아침 공지판</h1>
-      <span class="status">설정 대기 중</span>
+      <span class="status live">자동 갱신됨</span>
     </div>
     <p class="masthead-sub">학교 지메일에 온 공지를 매일 오전 9시에 훑어, 지금 상황(복학 준비 · 수학 조교 지원 · MABC 공모전)에 맞춰 뭐가 중요한지 판단해 날짜별로 쌓아둡니다.</p>
     <div class="meta-row">
-      <span>마지막 업데이트 <b>—</b></span>
+      <span>마지막 업데이트 <b>2026-09-01 18:21</b></span>
       <span>다음 업데이트 <b>매일 09:00 KST</b></span>
-      <span>누적 <b>0일</b></span>
+      <span>누적 <b>1일</b></span>
     </div>
   </header>
 
@@ -356,31 +432,173 @@
     <span class="legend-item"><span class="legend-dot" style="background:var(--pin-info)"></span>해당 없음 · 스킵 후보</span>
   </div>
 
+  <section class="today">
+    <div class="today-head">
+      <h2 class="today-title">오늘 할 일</h2>
+      <span class="today-date">2026-09-01</span>
+    </div>
+    <p class="today-empty">오늘 특별히 챙길 건 없음</p>
+  </section>
+
   <div class="timeline">
     <section class="day-group">
-      <div class="day-heading">예시 <span class="weekday">· 실제 데이터 아님</span></div>
+      <div class="day-heading">2026년 9월 1일 <span class="weekday">화요일</span><span class="count">9건</span></div>
       <div class="board">
-        <article class="notice priority-high">
+        <article class="notice priority-low">
           <div class="notice-head">
             <div class="notice-title-group">
-              <span class="notice-source">예시 · 교무처</span>
-              <span class="notice-title">2026학년도 2학기 복학 신청 안내</span>
+              <span class="notice-source">디지털정보처 · 교무처</span>
+              <span class="notice-title">KU Mobile 앱 설치 및 이용 안내</span>
             </div>
-            <span class="chip">바로 대응</span>
+            <span class="chip">참고만</span>
           </div>
           <p class="notice-analysis">
-            <span class="label">이렇게 정리될 예정입니다</span>
-            복학 준비 중인 상황이라 이 공지는 최우선으로 올라옵니다. 신청 기간·필요 서류·마감일을 짚고, 이미 처리된 내용이면 다음 날부터는 낮은 우선순위로 내려갑니다.
+            <span class="label">분석</span>
+            복학·수강신청 같은 학사 처리 결과를 앱 Push로 바로 받을 수 있어, 마감을 놓치기 쉬운 지금 상황에 실제로 도움이 되는 도구입니다. 당장 급한 일은 아니지만 미리 설치해 두면 앞으로 공지 확인 부담이 줄어듭니다.
           </p>
           <div class="notice-foot">
-            <span>예시 카드 — 실제 공지 아님</span>
+            <span>2026-09-01 수신</span>
           </div>
         </article>
 
-        <div class="placeholder">
-          <h2>첫 자동 업데이트를 기다리는 중</h2>
-          <p>루틴이 연결되면 매일 이 자리 위쪽에 그날 새 카드가 날짜별로 쌓입니다. 단순 요약이 아니라 지금 상황 기준으로 뭐가 급하고 뭐가 무시해도 되는지까지 판단해서 올라옵니다.</p>
-        </div>
+        <article class="notice priority-low">
+          <div class="notice-head">
+            <div class="notice-title-group">
+              <span class="notice-source">학생처 Student Success Center</span>
+              <span class="notice-title">보안 알림 — Windows에서 새로 로그인함</span>
+            </div>
+            <span class="chip">참고만</span>
+          </div>
+          <p class="notice-analysis">
+            <span class="label">분석</span>
+            본인이 직접 로그인한 것이라면 조치가 필요 없지만, 같은 날 학교 계정 비밀번호 재설정 알림도 함께 왔으니 둘 다 본인 행동이 맞는지 한 번 확인해두는 게 좋습니다.
+          </p>
+          <div class="notice-foot">
+            <span>2026-09-01 수신</span>
+          </div>
+        </article>
+
+        <article class="notice priority-low">
+          <div class="notice-head">
+            <div class="notice-title-group">
+              <span class="notice-source">학생처 SSC</span>
+              <span class="notice-title">9월 쿠카이브 뉴스레터 — KU 채용박람회·SSC 취업정보</span>
+            </div>
+            <span class="chip">참고만</span>
+          </div>
+          <p class="notice-analysis">
+            <span class="label">분석</span>
+            일반 취업정보 뉴스레터라 지금 당장 할 일은 없지만, 조교 알바·복학 이후 진로를 고민할 때 참고할 만한 채용박람회 소식이 담겨 있습니다.
+          </p>
+          <div class="notice-foot">
+            <span>2026-09-01 수신</span>
+          </div>
+        </article>
+
+        <article class="notice priority-low">
+          <div class="notice-head">
+            <div class="notice-title-group">
+              <span class="notice-source">고려대학교 계정(Microsoft)</span>
+              <span class="notice-title">고려대학교 암호가 재설정되었습니다</span>
+            </div>
+            <span class="chip">참고만</span>
+          </div>
+          <p class="notice-analysis">
+            <span class="label">분석</span>
+            본인이 재설정한 게 맞다면 무시해도 되지만, 기억에 없는 변경이라면 바로 비밀번호를 다시 바꾸고 계정 로그인 기록을 확인해야 합니다.
+          </p>
+          <div class="notice-foot">
+            <span>2026-08-31 수신</span>
+          </div>
+        </article>
+
+        <article class="notice priority-info" data-due="2026-09-06">
+          <div class="notice-head">
+            <div class="notice-title-group">
+              <span class="notice-source">학생처 Student Success Center</span>
+              <span class="notice-title">모의면접 및 한국산업은행 취업설명회 안내 (선배와의 만남)</span>
+            </div>
+            <span class="chip">해당 없음</span>
+          </div>
+          <p class="notice-analysis">
+            <span class="label">분석</span>
+            신청 대상이 취업을 준비하는 4학년·졸업생으로 한정돼 있어, 복학 준비와 조교 지원 단계인 지금 상황과는 맞지 않아 넘어가도 되는 공지입니다.
+          </p>
+          <div class="notice-foot">
+            <span>2026-09-01 수신</span>
+            <span>모의면접 신청마감 2026-09-06</span>
+          </div>
+        </article>
+
+        <article class="notice priority-info" data-due="2026-09-02">
+          <div class="notice-head">
+            <div class="notice-title-group">
+              <span class="notice-source">배터리-스마트팩토리학과 (LGES 계약학과)</span>
+              <span class="notice-title">2027학년도 전기 대학원 신입생 모집 및 입시설명회 안내</span>
+            </div>
+            <span class="chip">해당 없음</span>
+          </div>
+          <p class="notice-analysis">
+            <span class="label">분석</span>
+            대학원(석·박사) 신입생 모집 공지로, 학부 복학을 준비 중인 지금 상황과는 관련이 없어 넘어가도 됩니다.
+          </p>
+          <div class="notice-foot">
+            <span>2026-09-01 수신</span>
+            <span>설명회 참가신청 마감 2026-09-02</span>
+          </div>
+        </article>
+
+        <article class="notice priority-info" data-due="2026-09-10">
+          <div class="notice-head">
+            <div class="notice-title-group">
+              <span class="notice-source">ANCHOR사업단</span>
+              <span class="notice-title">유럽시장 진출 글로벌 액셀러레이팅 및 IR 데모데이 참가기업 모집</span>
+            </div>
+            <span class="chip">해당 없음</span>
+          </div>
+          <p class="notice-analysis">
+            <span class="label">분석</span>
+            창업기업 대상 지원 프로그램으로 현재 학생 상황과 관련이 없어 넘어가도 되는 공지입니다.
+          </p>
+          <div class="notice-foot">
+            <span>2026-09-01 수신</span>
+            <span>모집마감 2026-09-10</span>
+          </div>
+        </article>
+
+        <article class="notice priority-info">
+          <div class="notice-head">
+            <div class="notice-title-group">
+              <span class="notice-source">대학원혁신팀</span>
+              <span class="notice-title">K-3MT Competition 결승 초청</span>
+            </div>
+            <span class="chip">해당 없음</span>
+          </div>
+          <p class="notice-analysis">
+            <span class="label">분석</span>
+            대학원생 연구발표 행사 관람 초청으로, 학부 복학·조교 지원·MABC 준비와는 무관해 참고하지 않아도 됩니다.
+          </p>
+          <div class="notice-foot">
+            <span>2026-09-01 수신</span>
+          </div>
+        </article>
+
+        <article class="notice priority-info">
+          <div class="notice-head">
+            <div class="notice-title-group">
+              <span class="notice-source">학생처 SSC</span>
+              <span class="notice-title">직장생활 꿀팁 가이드 — 비즈니스 매너교육 특강</span>
+            </div>
+            <span class="chip">해당 없음</span>
+          </div>
+          <p class="notice-analysis">
+            <span class="label">분석</span>
+            신입사원 예정자를 위한 특강으로, 아직 복학 전 준비 단계인 지금 챙길 항목은 아닙니다.
+          </p>
+          <div class="notice-foot">
+            <span>2026-08-31 수신</span>
+          </div>
+        </article>
       </div>
     </section>
   </div>
